@@ -1,0 +1,65 @@
+{
+  "title": "Adaptive Comfort",
+  "config": {
+    "step": {
+      "user": {
+        "title": "Add an Adaptive Comfort zone",
+        "description": "Create an advisory thermostat zone. This will not control HVAC equipment.",
+        "data": {
+          "name": "Zone name",
+          "climate_entity": "Thermostat",
+          "indoor_temperature_entity": "Indoor temperature sensor",
+          "weather_entity": "Weather entity",
+          "sleep_temperature": "Sleep temperature",
+          "wake_temperature": "Wake temperature",
+          "sleep_start_hour": "Sleep start hour",
+          "wake_hour": "Wake hour",
+          "cost_strategy": "Cost strategy"
+        }
+      }
+    },
+    "abort": {
+      "already_configured": "This thermostat is already configured."
+    }
+  },
+  "entity": {
+    "sensor": {
+      "recommended_action": {
+        "name": "Recommended action",
+        "state": {
+          "heat": "Heat",
+          "cool": "Cool",
+          "idle": "Idle",
+          "unknown": "Unknown"
+        }
+      },
+      "recommended_heat_setpoint": {
+        "name": "Recommended heat setpoint"
+      },
+      "recommended_cool_setpoint": {
+        "name": "Recommended cool setpoint"
+      },
+      "perceived_temperature": {
+        "name": "Perceived temperature"
+      },
+      "target_temperature": {
+        "name": "Target temperature"
+      },
+      "indoor_temperature": {
+        "name": "Indoor temperature"
+      },
+      "outdoor_temperature": {
+        "name": "Outdoor temperature"
+      },
+      "forecast_high_temperature": {
+        "name": "Forecast high temperature"
+      },
+      "confidence": {
+        "name": "Confidence"
+      },
+      "reason": {
+        "name": "Reason"
+      }
+    }
+  }
+}

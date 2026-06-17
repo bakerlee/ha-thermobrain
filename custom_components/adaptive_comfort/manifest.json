@@ -1,0 +1,13 @@
+{
+  "domain": "adaptive_comfort",
+  "name": "Adaptive Comfort",
+  "codeowners": [],
+  "config_flow": true,
+  "documentation": "https://github.com/lee/ha-better-thermostat",
+  "integration_type": "helper",
+  "iot_class": "local_polling",
+  "issue_tracker": "https://github.com/lee/ha-better-thermostat/issues",
+  "requirements": [],
+  "version": "0.1.0",
+  "after_dependencies": ["climate", "weather"]
+}
