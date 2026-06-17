@@ -1,4 +1,4 @@
-"""Recommendation coordinator for Adaptive Comfort."""
+"""Recommendation coordinator for Thermobrain."""
 
 from __future__ import annotations
 
@@ -61,7 +61,7 @@ class Recommendation:
     temperature_unit: str
 
 
-class AdaptiveComfortCoordinator(DataUpdateCoordinator[Recommendation]):
+class ThermobrainCoordinator(DataUpdateCoordinator[Recommendation]):
     """Calculate advisory thermostat recommendations for one zone."""
 
     config_entry: ConfigEntry

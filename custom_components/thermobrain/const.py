@@ -1,10 +1,10 @@
-"""Constants for Adaptive Comfort."""
+"""Constants for Thermobrain."""
 
 from __future__ import annotations
 
 from homeassistant.const import Platform
 
-DOMAIN = "adaptive_comfort"
+DOMAIN = "thermobrain"
 PLATFORMS: list[Platform] = [Platform.SENSOR]
 
 CONF_CLIMATE_ENTITY = "climate_entity"

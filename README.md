@@ -1,6 +1,6 @@
-# Adaptive Comfort
+# Thermobrain
 
-Adaptive Comfort is a Home Assistant custom integration for experimenting with a
+Thermobrain is a Home Assistant custom integration for experimenting with a
 software-only thermostat supervisor.
 
 The first milestone is intentionally advisory-only. It observes an existing
@@ -22,14 +22,14 @@ HVAC equipment yet.
 
 ## Installation
 
-Copy `custom_components/adaptive_comfort` into your Home Assistant
+Copy `custom_components/thermobrain` into your Home Assistant
 `custom_components` directory and restart Home Assistant.
 
 Then add the integration from the UI:
 
 1. Go to **Settings** > **Devices & services**.
 2. Select **Add integration**.
-3. Search for **Adaptive Comfort**.
+3. Search for **Thermobrain**.
 4. Add one zone by choosing the thermostat, optional indoor temperature sensor,
    optional weather entity, sleep/wake temperatures, sleep/wake hours, and cost
    strategy.
@@ -57,4 +57,3 @@ Each zone exposes these sensors:
 - There is no learned thermal model yet.
 - Full-control mode, anti-short-cycle enforcement, and multi-zone global
   optimization are future work.
-

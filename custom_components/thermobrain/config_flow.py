@@ -1,4 +1,4 @@
-"""Config flow for Adaptive Comfort."""
+"""Config flow for Thermobrain."""
 
 from __future__ import annotations
 
@@ -28,8 +28,8 @@ from .const import (
 )
 
 
-class AdaptiveComfortConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
-    """Handle an Adaptive Comfort config flow."""
+class ThermobrainConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
+    """Handle a Thermobrain config flow."""
 
     VERSION = 1
 

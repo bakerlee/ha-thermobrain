@@ -1,9 +1,9 @@
 {
-  "title": "Adaptive Comfort",
+  "title": "Thermobrain",
   "config": {
     "step": {
       "user": {
-        "title": "Add an Adaptive Comfort zone",
+        "title": "Add a Thermobrain zone",
         "description": "Create an advisory thermostat zone. This will not control HVAC equipment.",
         "data": {
           "name": "Zone name",
