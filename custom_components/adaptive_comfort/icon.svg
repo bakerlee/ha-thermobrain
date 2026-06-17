@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-labelledby="title desc">
+  <title id="title">Adaptive Comfort icon</title>
+  <desc id="desc">A classic round thermostat line drawing with a brain-shaped outline.</desc>
+  <g fill="none" stroke="#16a7d8" stroke-linecap="round" stroke-linejoin="round">
+    <path
+      d="M256 70c-25 0-47 12-60 32-24-2-47 11-58 32-24 6-41 26-43 51-19 15-27 41-19 64-12 24-6 53 15 71-1 26 17 50 42 58 11 24 38 38 64 32 16 18 38 29 59 29s43-11 59-29c26 6 53-8 64-32 25-8 43-32 42-58 21-18 27-47 15-71 8-23 0-49-19-64-2-25-19-45-43-51-11-21-34-34-58-32-13-20-35-32-60-32z"
+      stroke-width="22" />
+    <path
+      d="M256 176c-44 0-80 36-80 80s36 80 80 80 80-36 80-80-36-80-80-80z"
+      stroke-width="18" />
+    <path
+      d="M256 256l60-42"
+      stroke-width="18" />
+    <path
+      d="M256 256h.01"
+      stroke-width="28" />
+    <path
+      d="M256 118v30M256 364v30M118 256h30M364 256h30M166 166l21 21M325 325l21 21M346 166l-21 21M187 325l-21 21"
+      stroke-width="14" />
+    <path
+      d="M197 123c-22 16-27 48-10 69M315 123c22 16 27 48 10 69"
+      stroke-width="14" />
+    <path
+      d="M146 212c25-13 56-8 75 12M366 212c-25-13-56-8-75 12"
+      stroke-width="14" />
+    <path
+      d="M145 300c28 1 55 17 70 42M367 300c-28 1-55 17-70 42"
+      stroke-width="14" />
+    <path
+      d="M202 388c-17-17-19-44-5-63M310 388c17-17 19-44 5-63"
+      stroke-width="14" />
+  </g>
+</svg>
