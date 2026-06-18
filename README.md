@@ -14,8 +14,8 @@ HVAC equipment yet.
 - Multiple zones by adding the integration more than once.
 - Recommendation sensors attach to the configured thermostat device when it has
   a Home Assistant device registry entry.
-- Advisory sensors for recommended action, heat setpoint, cool setpoint,
-  perceived temperature, confidence, and reason.
+- Advisory sensors are labeled with a Thermobrain prefix so they remain
+  distinct from the thermostat device's native entities.
 - Source climate and weather values are consumed internally instead of mirrored
   as duplicate Thermobrain sensors.
 - Simple day/night schedule with sleep and wake temperatures.
@@ -54,13 +54,13 @@ Then add the integration from the UI:
 
 Each zone exposes these sensors:
 
-- Recommended action
-- Recommended heat setpoint
-- Recommended cool setpoint
-- Perceived temperature
-- Comfort target
-- Confidence
-- Reason
+- Thermobrain recommended action
+- Thermobrain recommended heat setpoint
+- Thermobrain recommended cool setpoint
+- Thermobrain perceived temperature
+- Thermobrain comfort target
+- Thermobrain confidence
+- Thermobrain reason
 
 ## Current Limitations
 
