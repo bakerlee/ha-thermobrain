@@ -1,10 +1,10 @@
-# Existing Home Assistant Thermostat Research
+# Existing Home Assistant Thermostat Research for Thermobrain
 
 Date: 2026-06-17
 
 ## Question
 
-Does an existing Home Assistant integration already provide the desired "best possible thermostat" behavior?
+Does an existing Home Assistant integration already provide the desired Thermobrain behavior?
 
 Desired shape:
 
@@ -28,7 +28,7 @@ I searched the Home Assistant official documentation, HACS-adjacent GitHub proje
 
 ## Short Answer
 
-I did not find an existing integration that should be adopted as-is for this goal.
+I did not find an existing integration that should be adopted as-is for Thermobrain.
 
 The closest existing project is Versatile Thermostat. It is mature and actively maintained, supports many underlying device types, can wrap existing climate entities, has centralized configuration, has self-regulation, and can account for outdoor temperature in some algorithms. But it does not appear to provide an advisory-only mode, forecast-aware planning over a future schedule, a cost-vs-comfort objective, or the specific "do not heat before wake if free outdoor recovery will happen" behavior.
 
@@ -229,18 +229,18 @@ Official Home Assistant APIs support the integration shape we want:
 - Weather entities expose current weather attributes such as temperature, humidity, apparent temperature, wind, UV, and cloud coverage.
 - Weather forecasts are available through a separate API. Home Assistant supports daily, hourly, and twice-daily forecast features, and the user-facing `weather.get_forecasts` action can retrieve forecasts from one or more weather entities.
 
-This suggests the integration should consume existing climate and weather entities rather than owning weather-provider integrations or physical HVAC drivers.
+This suggests Thermobrain should consume existing climate and weather entities rather than owning weather-provider integrations or physical HVAC drivers.
 
 ## Conclusion
 
-Build a new integration, but steal the right ideas:
+Build Thermobrain as a new integration, but steal the right ideas:
 
 - Use Versatile Thermostat as the main design reference for wrapping underlying climate entities, centralized multi-zone configuration, presets, safe regulation, and outdoor-temperature feed-forward.
 - Use Better Thermostat as a reference for weather-aware TRV behavior, grouped devices, advanced algorithms, and Home Assistant custom-integration maturity.
 - Use Dual Smart Thermostat as a reference for heat/cool range behavior, HVAC action reasoning, heat pump/fan/dry edge cases, and safety constraints.
 - Use Home Assistant's official weather forecast APIs for provider-independent forecast input.
 
-The unique product idea should be:
+Thermobrain's unique product idea should be:
 
 1. A supervisory optimizer over existing climate entities.
 2. A zone model with ideal comfort temperature, acceptable deviation, and optional perceived-comfort correction from outdoor conditions.
@@ -259,4 +259,3 @@ If building this project, do not start with machine learning. Start with a trans
 - Zone input: current temperature, humidity if available, desired comfort schedule, occupied/asleep state, and underlying climate capabilities.
 - Cost/comfort knob: qualitative mode mapping to allowed drift, recovery aggressiveness, and minimum benefit threshold before actuation.
 - Output in advisory mode: "recommended HVAC mode", "recommended heat setpoint", "recommended cool setpoint", "reason", "expected comfort deviation", and "confidence".
-
