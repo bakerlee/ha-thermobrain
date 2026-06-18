@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+from collections.abc import Callable
 from dataclasses import dataclass
 from datetime import timedelta
 import logging
@@ -12,8 +13,9 @@ from homeassistant.const import (
     ATTR_TEMPERATURE,
     CONF_ENTITY_ID,
 )
-from homeassistant.core import HomeAssistant
+from homeassistant.core import HomeAssistant, callback
 from homeassistant.exceptions import HomeAssistantError
+from homeassistant.helpers.event import async_track_state_change_event
 from homeassistant.helpers.update_coordinator import DataUpdateCoordinator
 from homeassistant.util import dt as dt_util
 
@@ -75,6 +77,25 @@ class ThermobrainCoordinator(DataUpdateCoordinator[Recommendation]):
             update_interval=UPDATE_INTERVAL,
         )
         self.config_entry = config_entry
+
+    def async_track_source_updates(self) -> Callable[[], None]:
+        """Refresh recommendations when configured source entities change state."""
+        data = self.config_entry.data
+        entity_ids = [data[CONF_CLIMATE_ENTITY]]
+        if indoor_entity_id := data.get(CONF_INDOOR_TEMPERATURE_ENTITY):
+            entity_ids.append(indoor_entity_id)
+        if weather_entity_id := data.get(CONF_WEATHER_ENTITY):
+            entity_ids.append(weather_entity_id)
+
+        @callback
+        def _handle_source_state_change(_: Any) -> None:
+            self.hass.async_create_task(self.async_request_refresh())
+
+        return async_track_state_change_event(
+            self.hass,
+            entity_ids,
+            _handle_source_state_change,
+        )
 
     async def _async_update_data(self) -> Recommendation:
         """Fetch inputs and calculate the latest recommendation."""
