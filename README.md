@@ -59,8 +59,8 @@ Each zone exposes these sensors:
 - Thermobrain recommended cool setpoint
 - Thermobrain perceived temperature
 - Thermobrain comfort target
-- Thermobrain confidence
-- Thermobrain reason
+- Thermobrain confidence (diagnostic)
+- Thermobrain reason (diagnostic)
 
 ## Current Limitations
 

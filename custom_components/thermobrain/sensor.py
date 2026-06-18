@@ -12,7 +12,7 @@ from homeassistant.components.sensor import (
     SensorEntityDescription,
 )
 from homeassistant.config_entries import ConfigEntry
-from homeassistant.const import PERCENTAGE
+from homeassistant.const import PERCENTAGE, EntityCategory
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers import device_registry as dr
 from homeassistant.helpers import entity_registry as er
@@ -78,6 +78,7 @@ SENSOR_DESCRIPTIONS: tuple[ThermobrainSensorEntityDescription, ...] = (
     ThermobrainSensorEntityDescription(
         key="confidence",
         translation_key="confidence",
+        entity_category=EntityCategory.DIAGNOSTIC,
         native_unit_of_measurement=PERCENTAGE,
         value_fn=lambda data: data.confidence,
         unit_fn=lambda data: PERCENTAGE,
@@ -85,6 +86,7 @@ SENSOR_DESCRIPTIONS: tuple[ThermobrainSensorEntityDescription, ...] = (
     ThermobrainSensorEntityDescription(
         key="reason",
         translation_key="reason",
+        entity_category=EntityCategory.DIAGNOSTIC,
         value_fn=lambda data: data.reason,
     ),
 )
