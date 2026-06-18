@@ -13,6 +13,8 @@ from homeassistant.components.sensor import (
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import PERCENTAGE
 from homeassistant.core import HomeAssistant
+from homeassistant.helpers import device_registry as dr
+from homeassistant.helpers import entity_registry as er
 from homeassistant.helpers.entity import DeviceInfo
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.helpers.update_coordinator import CoordinatorEntity
@@ -22,6 +24,7 @@ from .const import (
     ACTION_HEAT,
     ACTION_IDLE,
     ACTION_UNKNOWN,
+    CONF_CLIMATE_ENTITY,
     DOMAIN,
 )
 from .coordinator import Recommendation, ThermobrainCoordinator
@@ -117,9 +120,34 @@ async def async_setup_entry(
     await coordinator.async_config_entry_first_refresh()
 
     hass.data.setdefault(DOMAIN, {})[entry.entry_id] = coordinator
+    source_device_info = _source_device_info(hass, entry)
     async_add_entities(
-        ThermobrainSensor(coordinator, entry, description)
+        ThermobrainSensor(coordinator, entry, description, source_device_info)
         for description in SENSOR_DESCRIPTIONS
+    )
+
+
+def _source_device_info(hass: HomeAssistant, entry: ConfigEntry) -> DeviceInfo | None:
+    """Return device info for the configured climate entity's device."""
+    entity_registry = er.async_get(hass)
+    device_registry = dr.async_get(hass)
+
+    source_entity = entity_registry.async_get(entry.data[CONF_CLIMATE_ENTITY])
+    if source_entity is None or source_entity.device_id is None:
+        return None
+
+    source_device = device_registry.async_get(source_entity.device_id)
+    if source_device is None:
+        return None
+
+    identifiers = set(source_device.identifiers)
+    connections = set(source_device.connections)
+    if not identifiers and not connections:
+        return None
+
+    return DeviceInfo(
+        identifiers=identifiers,
+        connections=connections,
     )
 
 
@@ -134,16 +162,13 @@ class ThermobrainSensor(CoordinatorEntity[ThermobrainCoordinator], SensorEntity)
         coordinator: ThermobrainCoordinator,
         entry: ConfigEntry,
         description: ThermobrainSensorEntityDescription,
+        device_info: DeviceInfo | None,
     ) -> None:
         """Initialize the sensor."""
         super().__init__(coordinator)
         self.entity_description = description
         self._attr_unique_id = f"{entry.entry_id}_{description.key}"
-        self._attr_device_info = DeviceInfo(
-            identifiers={(DOMAIN, entry.entry_id)},
-            name=entry.title,
-            manufacturer="Thermobrain",
-        )
+        self._attr_device_info = device_info
 
     @property
     def native_value(self) -> str | int | float | None:

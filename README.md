@@ -12,6 +12,8 @@ HVAC equipment yet.
 
 - One Home Assistant config entry per zone.
 - Multiple zones by adding the integration more than once.
+- Recommendation sensors attach to the configured thermostat device when it has
+  a Home Assistant device registry entry.
 - Advisory sensors for recommended action, heat setpoint, cool setpoint,
   perceived temperature, confidence, and reason.
 - Simple day/night schedule with sleep and wake temperatures.
