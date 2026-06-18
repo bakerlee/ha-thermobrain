@@ -3,10 +3,10 @@
   "name": "Thermobrain",
   "codeowners": [],
   "config_flow": true,
-  "documentation": "https://github.com/lee/thermobrain",
+  "documentation": "https://github.com/bakerlee/ha-better-thermostat",
   "integration_type": "helper",
   "iot_class": "local_polling",
-  "issue_tracker": "https://github.com/lee/thermobrain/issues",
+  "issue_tracker": "https://github.com/bakerlee/ha-better-thermostat/issues",
   "requirements": [],
   "version": "0.1.0",
   "after_dependencies": ["climate", "weather"]

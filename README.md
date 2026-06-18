@@ -22,6 +22,18 @@ HVAC equipment yet.
 
 ## Installation
 
+### HACS
+
+Add this repository to HACS as a custom repository of type **Integration**:
+
+```text
+https://github.com/bakerlee/ha-better-thermostat
+```
+
+Install **Thermobrain** from HACS, then restart Home Assistant.
+
+### Manual
+
 Copy `custom_components/thermobrain` into your Home Assistant
 `custom_components` directory and restart Home Assistant.
 
