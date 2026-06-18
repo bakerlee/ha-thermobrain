@@ -16,6 +16,8 @@ HVAC equipment yet.
   a Home Assistant device registry entry.
 - Advisory sensors for recommended action, heat setpoint, cool setpoint,
   perceived temperature, confidence, and reason.
+- Source climate and weather values are consumed internally instead of mirrored
+  as duplicate Thermobrain sensors.
 - Simple day/night schedule with sleep and wake temperatures.
 - Cost strategy selector: comfort, balanced, or savings.
 - Outdoor-temperature comfort adjustment.
@@ -56,10 +58,7 @@ Each zone exposes these sensors:
 - Recommended heat setpoint
 - Recommended cool setpoint
 - Perceived temperature
-- Target temperature
-- Indoor temperature
-- Outdoor temperature
-- Forecast high temperature
+- Comfort target
 - Confidence
 - Reason
 
