@@ -16,10 +16,26 @@
           "wake_hour": "Wake hour",
           "cost_strategy": "Cost strategy"
         }
+      },
+      "reconfigure": {
+        "title": "Reconfigure Thermobrain zone",
+        "description": "Update the advisory thermostat zone settings.",
+        "data": {
+          "name": "Zone name",
+          "climate_entity": "Thermostat",
+          "indoor_temperature_entity": "Indoor temperature sensor",
+          "weather_entity": "Weather entity",
+          "sleep_temperature": "Sleep temperature",
+          "wake_temperature": "Wake temperature",
+          "sleep_start_hour": "Sleep start hour",
+          "wake_hour": "Wake hour",
+          "cost_strategy": "Cost strategy"
+        }
       }
     },
     "abort": {
-      "already_configured": "This thermostat is already configured."
+      "already_configured": "This thermostat is already configured.",
+      "reconfigure_successful": "Thermobrain has been reconfigured."
     }
   },
   "entity": {

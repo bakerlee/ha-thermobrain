@@ -6,7 +6,6 @@ from collections.abc import Callable
 from dataclasses import dataclass
 
 from homeassistant.components.sensor import (
-    DOMAIN as SENSOR_DOMAIN,
     SensorDeviceClass,
     SensorEntity,
     SensorEntityDescription,
@@ -91,13 +90,6 @@ SENSOR_DESCRIPTIONS: tuple[ThermobrainSensorEntityDescription, ...] = (
     ),
 )
 
-LEGACY_MIRROR_SENSOR_KEYS: tuple[str, ...] = (
-    "indoor_temperature",
-    "outdoor_temperature",
-    "forecast_high_temperature",
-)
-
-
 async def async_setup_entry(
     hass: HomeAssistant,
     entry: ConfigEntry,
@@ -109,25 +101,11 @@ async def async_setup_entry(
     await coordinator.async_config_entry_first_refresh()
 
     hass.data.setdefault(DOMAIN, {})[entry.entry_id] = coordinator
-    _remove_legacy_mirror_sensors(hass, entry)
     source_device_info = _source_device_info(hass, entry)
     async_add_entities(
         ThermobrainSensor(coordinator, entry, description, source_device_info)
         for description in SENSOR_DESCRIPTIONS
     )
-
-
-def _remove_legacy_mirror_sensors(hass: HomeAssistant, entry: ConfigEntry) -> None:
-    """Remove old source mirror sensors from the entity registry."""
-    entity_registry = er.async_get(hass)
-    for key in LEGACY_MIRROR_SENSOR_KEYS:
-        entity_id = entity_registry.async_get_entity_id(
-            SENSOR_DOMAIN,
-            DOMAIN,
-            f"{entry.entry_id}_{key}",
-        )
-        if entity_id is not None:
-            entity_registry.async_remove(entity_id)
 
 
 def _source_device_info(hass: HomeAssistant, entry: ConfigEntry) -> DeviceInfo | None:

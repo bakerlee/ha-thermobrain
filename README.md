@@ -50,6 +50,9 @@ Then add the integration from the UI:
    optional weather entity, sleep/wake temperatures, sleep/wake hours, and cost
    strategy.
 
+To update a zone later, go to **Settings** > **Devices & services** >
+**Thermobrain**, open the integration entry, and select **Configure**.
+
 ## Entities
 
 Each zone exposes these sensors:
