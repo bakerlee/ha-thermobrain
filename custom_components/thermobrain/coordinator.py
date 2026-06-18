@@ -39,7 +39,6 @@ from .const import (
     WEATHER_DOMAIN,
 )
 
-UPDATE_INTERVAL = timedelta(minutes=5)
 FORECAST_LOOKAHEAD_HOURS = 4
 WAKE_RECOVERY_WINDOW_HOURS = 2
 
@@ -74,7 +73,6 @@ class ThermobrainCoordinator(DataUpdateCoordinator[Recommendation]):
             hass,
             logger=LOGGER,
             name=f"{DOMAIN}_{config_entry.entry_id}",
-            update_interval=UPDATE_INTERVAL,
         )
         self.config_entry = config_entry
 
