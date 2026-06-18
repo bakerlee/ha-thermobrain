@@ -115,10 +115,12 @@ class ThermobrainCoordinator(DataUpdateCoordinator[Recommendation]):
             indoor_temperature, outdoor_temperature, target_temperature
         )
         allowed_drift = self._allowed_drift()
+        lower_setpoint = round(target_temperature - allowed_drift, 1)
+        upper_setpoint = round(target_temperature + allowed_drift, 1)
 
         action = ACTION_IDLE
-        heat_setpoint: float | None = None
-        cool_setpoint: float | None = None
+        heat_setpoint = lower_setpoint
+        cool_setpoint = upper_setpoint
         reason = "Comfort is within the current allowed drift."
 
         if perceived_temperature < target_temperature - allowed_drift:
@@ -129,14 +131,14 @@ class ThermobrainCoordinator(DataUpdateCoordinator[Recommendation]):
                 )
             else:
                 action = ACTION_HEAT
-                heat_setpoint = target_temperature
+                heat_setpoint = round(target_temperature, 1)
                 reason = (
                     "Perceived comfort is below target after "
                     "outdoor-temperature adjustment."
                 )
         elif perceived_temperature > target_temperature + allowed_drift:
             action = ACTION_COOL
-            cool_setpoint = target_temperature
+            cool_setpoint = round(target_temperature, 1)
             reason = (
                 "Perceived comfort is above target after "
                 "outdoor-temperature adjustment."

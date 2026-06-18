@@ -55,12 +55,17 @@ Then add the integration from the UI:
 Each zone exposes these sensors:
 
 - Thermobrain recommended action
-- Thermobrain recommended heat setpoint
-- Thermobrain recommended cool setpoint
+- Thermobrain recommended heat setpoint: the lower recommended comfort bound
+  when inputs are available, or the active heat target when heat is recommended.
+- Thermobrain recommended cool setpoint: the upper recommended comfort bound
+  when inputs are available, or the active cool target when cool is recommended.
 - Thermobrain perceived temperature
 - Thermobrain comfort target
 - Thermobrain confidence (diagnostic)
 - Thermobrain reason (diagnostic)
+
+Recommended setpoints are `unknown` only when Thermobrain does not have enough
+input data to calculate a recommendation.
 
 ## Current Limitations
 
