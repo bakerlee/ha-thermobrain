@@ -12,9 +12,8 @@ HVAC equipment yet.
 
 - One Home Assistant config entry per zone.
 - Multiple zones by adding the integration more than once.
-- Recommendation sensors attach to a Thermobrain zone device, linked back to
-  the configured thermostat device when Home Assistant has enough registry
-  metadata.
+- Recommendation sensors attach to the configured thermostat device when it has
+  a Home Assistant device registry entry.
 - Advisory sensors are labeled with a Thermobrain prefix so they remain
   distinct from the thermostat device's native entities.
 - Source climate and weather values are consumed internally instead of mirrored
@@ -54,8 +53,9 @@ Then add the integration from the UI:
 To update a zone later, go to **Settings** > **Devices & services** >
 **Thermobrain**, open the integration entry, and select **Configure**.
 
-To remove a zone device, open the Thermobrain zone device from the integration
-entry and select **Delete**.
+To remove a zone, remove its Thermobrain integration entry. Thermobrain does not
+offer a device delete action because its entities are intentionally grouped
+under the referenced thermostat device.
 
 ## Entities
 
