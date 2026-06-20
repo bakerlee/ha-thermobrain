@@ -7,13 +7,13 @@ from typing import Any
 import voluptuous as vol
 
 from homeassistant import config_entries
-from homeassistant.const import CONF_NAME, UnitOfTemperature
+from homeassistant.const import UnitOfTemperature
+from homeassistant.helpers import entity_registry as er
 from homeassistant.helpers import selector
 
 from .const import (
     CONF_CLIMATE_ENTITY,
     CONF_COST_STRATEGY,
-    CONF_INDOOR_TEMPERATURE_ENTITY,
     CONF_SLEEP_START_HOUR,
     CONF_SLEEP_TEMPERATURE,
     CONF_WAKE_HOUR,
@@ -44,7 +44,7 @@ class ThermobrainConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
             self._abort_if_unique_id_configured()
 
             return self.async_create_entry(
-                title=user_input[CONF_NAME],
+                title=self._climate_title(user_input[CONF_CLIMATE_ENTITY]),
                 data=user_input,
             )
 
@@ -66,18 +66,23 @@ class ThermobrainConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
 
             return self.async_update_reload_and_abort(
                 entry,
-                title=user_input[CONF_NAME],
+                title=self._climate_title(user_input[CONF_CLIMATE_ENTITY]),
                 data=user_input,
             )
 
         return self.async_show_form(
             step_id="reconfigure",
-            data_schema=self._data_schema({CONF_NAME: entry.title, **entry.data}),
+            data_schema=self._data_schema(entry.data),
         )
 
     def _data_schema(self, defaults: dict[str, Any] | None = None) -> vol.Schema:
         """Return the config flow schema."""
         defaults = defaults or {}
+        weather_entity_default = _default(
+            defaults,
+            CONF_WEATHER_ENTITY,
+            self._single_weather_entity(),
+        )
         temperature_unit = self.hass.config.units.temperature_unit
         if temperature_unit == UnitOfTemperature.CELSIUS:
             default_sleep_temperature = 19.5
@@ -105,24 +110,14 @@ class ThermobrainConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
         return vol.Schema(
             {
                 vol.Required(
-                    CONF_NAME,
-                    default=_default(defaults, CONF_NAME, "Primary bedroom"),
-                ): str,
-                vol.Required(
                     CONF_CLIMATE_ENTITY,
                     default=_default(defaults, CONF_CLIMATE_ENTITY),
                 ): selector.EntitySelector(
                     selector.EntitySelectorConfig(domain="climate")
                 ),
                 vol.Optional(
-                    CONF_INDOOR_TEMPERATURE_ENTITY,
-                    default=_default(defaults, CONF_INDOOR_TEMPERATURE_ENTITY),
-                ): selector.EntitySelector(
-                    selector.EntitySelectorConfig(domain="sensor")
-                ),
-                vol.Optional(
                     CONF_WEATHER_ENTITY,
-                    default=_default(defaults, CONF_WEATHER_ENTITY),
+                    default=weather_entity_default,
                 ): selector.EntitySelector(
                     selector.EntitySelectorConfig(domain="weather")
                 ),
@@ -192,6 +187,39 @@ class ThermobrainConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
                 ),
             }
         )
+
+    def _climate_title(self, entity_id: str) -> str:
+        """Return a human-friendly title for the selected thermostat."""
+        state = self.hass.states.get(entity_id)
+        if state is not None:
+            return state.name
+
+        entity_registry = er.async_get(self.hass)
+        entity_entry = entity_registry.async_get(entity_id)
+        if entity_entry is not None:
+            return entity_entry.name or entity_entry.original_name or entity_id
+
+        return entity_id
+
+    def _single_weather_entity(self) -> Any:
+        """Return the only available weather entity when there is exactly one."""
+        weather_entity_ids = [
+            state.entity_id for state in self.hass.states.async_all("weather")
+        ]
+        if len(weather_entity_ids) == 1:
+            return weather_entity_ids[0]
+
+        entity_registry = er.async_get(self.hass)
+        weather_entity_ids = [
+            entity_entry.entity_id
+            for entity_entry in entity_registry.entities.values()
+            if entity_entry.entity_id.startswith("weather.")
+            and entity_entry.disabled_by is None
+        ]
+        if len(weather_entity_ids) == 1:
+            return weather_entity_ids[0]
+
+        return vol.UNDEFINED
 
 
 def _default(

@@ -4,14 +4,14 @@ Thermobrain is a Home Assistant custom integration for experimenting with a
 software-only thermostat supervisor.
 
 The first milestone is intentionally advisory-only. It observes an existing
-`climate` entity, an optional indoor temperature sensor, and an optional
-`weather` entity, then publishes recommendation sensors. It does not control
-HVAC equipment yet.
+`climate` entity and an optional `weather` entity, then publishes recommendation
+sensors. Indoor temperature comes from the selected thermostat. It does not
+control HVAC equipment yet.
 
 ## Current Features
 
-- One Home Assistant config entry per zone.
-- Multiple zones by adding the integration more than once.
+- One Home Assistant config entry per enhanced thermostat.
+- Multiple thermostats by adding the integration more than once.
 - Recommendation sensors attach to the configured thermostat device when it has
   a Home Assistant device registry entry.
 - Advisory sensors are labeled with a Thermobrain prefix so they remain
@@ -46,20 +46,19 @@ Then add the integration from the UI:
 1. Go to **Settings** > **Devices & services**.
 2. Select **Add integration**.
 3. Search for **Thermobrain**.
-4. Add one zone by choosing the thermostat, optional indoor temperature sensor,
-   optional weather entity, sleep/wake temperatures, sleep/wake hours, and cost
-   strategy.
+4. Enhance a thermostat by choosing the thermostat, optional weather entity,
+   sleep/wake temperatures, sleep/wake hours, and cost strategy.
 
-To update a zone later, go to **Settings** > **Devices & services** >
+To update an enhanced thermostat later, go to **Settings** > **Devices & services** >
 **Thermobrain**, open the integration entry, and select **Configure**.
 
-To remove a zone, remove its Thermobrain integration entry. Thermobrain does not
-offer a device delete action because its entities are intentionally grouped
-under the referenced thermostat device.
+To remove Thermobrain from a thermostat, remove its Thermobrain integration
+entry. Thermobrain does not offer a device delete action because its entities are
+intentionally grouped under the referenced thermostat device.
 
 ## Entities
 
-Each zone exposes these sensors:
+Each enhanced thermostat exposes these sensors:
 
 - Thermobrain recommended action
 - Thermobrain recommended heat setpoint: the lower recommended comfort bound

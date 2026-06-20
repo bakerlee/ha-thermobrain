@@ -3,12 +3,10 @@
   "config": {
     "step": {
       "user": {
-        "title": "Add a Thermobrain zone",
-        "description": "Create an advisory thermostat zone. This will not control HVAC equipment.",
+        "title": "Enhance a thermostat with Thermobrain",
+        "description": "Create advisory sensors for an existing thermostat. This will not control HVAC equipment.",
         "data": {
-          "name": "Zone name",
           "climate_entity": "Thermostat",
-          "indoor_temperature_entity": "Indoor temperature sensor",
           "weather_entity": "Weather entity",
           "sleep_temperature": "Sleep temperature",
           "wake_temperature": "Wake temperature",
@@ -18,12 +16,10 @@
         }
       },
       "reconfigure": {
-        "title": "Reconfigure Thermobrain zone",
-        "description": "Update the advisory thermostat zone settings.",
+        "title": "Reconfigure Thermobrain",
+        "description": "Update advisory settings for this thermostat.",
         "data": {
-          "name": "Zone name",
           "climate_entity": "Thermostat",
-          "indoor_temperature_entity": "Indoor temperature sensor",
           "weather_entity": "Weather entity",
           "sleep_temperature": "Sleep temperature",
           "wake_temperature": "Wake temperature",
