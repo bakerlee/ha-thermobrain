@@ -50,8 +50,11 @@ class ThermobrainConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
 
         return self.async_show_form(
             step_id="user",
-            data_schema=self._data_schema(),
+            data_schema=self._data_schema(
+                excluded_climate_entities=self._configured_climate_entities()
+            ),
             errors=errors,
+            description_placeholders=self._description_placeholders(),
         )
 
     async def async_step_reconfigure(
@@ -72,12 +75,25 @@ class ThermobrainConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
 
         return self.async_show_form(
             step_id="reconfigure",
-            data_schema=self._data_schema(entry.data),
+            data_schema=self._data_schema(
+                entry.data,
+                excluded_climate_entities=self._configured_climate_entities(
+                    skip_entry_id=entry.entry_id
+                ),
+            ),
+            description_placeholders=self._description_placeholders(
+                skip_entry_id=entry.entry_id
+            ),
         )
 
-    def _data_schema(self, defaults: dict[str, Any] | None = None) -> vol.Schema:
+    def _data_schema(
+        self,
+        defaults: dict[str, Any] | None = None,
+        excluded_climate_entities: list[str] | None = None,
+    ) -> vol.Schema:
         """Return the config flow schema."""
         defaults = defaults or {}
+        excluded_climate_entities = excluded_climate_entities or []
         weather_entity_default = _default(
             defaults,
             CONF_WEATHER_ENTITY,
@@ -113,7 +129,10 @@ class ThermobrainConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
                     CONF_CLIMATE_ENTITY,
                     default=_default(defaults, CONF_CLIMATE_ENTITY),
                 ): selector.EntitySelector(
-                    selector.EntitySelectorConfig(domain="climate")
+                    selector.EntitySelectorConfig(
+                        domain="climate",
+                        exclude_entities=excluded_climate_entities,
+                    )
                 ),
                 vol.Optional(
                     CONF_WEATHER_ENTITY,
@@ -187,6 +206,40 @@ class ThermobrainConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
                 ),
             }
         )
+
+    def _configured_climate_entities(
+        self,
+        skip_entry_id: str | None = None,
+    ) -> list[str]:
+        """Return climate entities already managed by Thermobrain."""
+        configured_entities: list[str] = []
+        for entry in self.hass.config_entries.async_entries(DOMAIN):
+            if entry.entry_id == skip_entry_id:
+                continue
+            climate_entity = entry.data.get(CONF_CLIMATE_ENTITY)
+            if climate_entity:
+                configured_entities.append(climate_entity)
+
+        return configured_entities
+
+    def _description_placeholders(
+        self,
+        skip_entry_id: str | None = None,
+    ) -> dict[str, str]:
+        """Return form description placeholders."""
+        configured_climate_entities = self._configured_climate_entities(skip_entry_id)
+        if not configured_climate_entities:
+            return {"configured_climates": ""}
+
+        configured_climates = ", ".join(
+            self._climate_title(entity_id)
+            for entity_id in sorted(configured_climate_entities)
+        )
+        return {
+            "configured_climates": (
+                f"\n\nAlready configured thermostats are hidden: {configured_climates}"
+            )
+        }
 
     def _climate_title(self, entity_id: str) -> str:
         """Return a human-friendly title for the selected thermostat."""

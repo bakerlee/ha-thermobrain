@@ -4,7 +4,7 @@
     "step": {
       "user": {
         "title": "Enhance a thermostat with Thermobrain",
-        "description": "Create advisory sensors for an existing thermostat. This will not control HVAC equipment.",
+        "description": "Create advisory sensors for an existing thermostat. This will not control HVAC equipment.{configured_climates}",
         "data": {
           "climate_entity": "Thermostat",
           "weather_entity": "Weather entity",
@@ -17,7 +17,7 @@
       },
       "reconfigure": {
         "title": "Reconfigure Thermobrain",
-        "description": "Update advisory settings for this thermostat.",
+        "description": "Update advisory settings for this thermostat.{configured_climates}",
         "data": {
           "climate_entity": "Thermostat",
           "weather_entity": "Weather entity",
