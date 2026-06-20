@@ -90,6 +90,7 @@ SENSOR_DESCRIPTIONS: tuple[ThermobrainSensorEntityDescription, ...] = (
     ),
 )
 
+
 async def async_setup_entry(
     hass: HomeAssistant,
     entry: ConfigEntry,
@@ -101,15 +102,31 @@ async def async_setup_entry(
     await coordinator.async_config_entry_first_refresh()
 
     hass.data.setdefault(DOMAIN, {})[entry.entry_id] = coordinator
-    source_device_info = _source_device_info(hass, entry)
+    device_info = _thermobrain_device_info(hass, entry)
     async_add_entities(
-        ThermobrainSensor(coordinator, entry, description, source_device_info)
+        ThermobrainSensor(coordinator, entry, description, device_info)
         for description in SENSOR_DESCRIPTIONS
     )
 
 
-def _source_device_info(hass: HomeAssistant, entry: ConfigEntry) -> DeviceInfo | None:
-    """Return device info for the configured climate entity's device."""
+def _thermobrain_device_info(hass: HomeAssistant, entry: ConfigEntry) -> DeviceInfo:
+    """Return device info for the Thermobrain advisory zone."""
+    device_info = DeviceInfo(
+        identifiers={(DOMAIN, entry.entry_id)},
+        manufacturer="Thermobrain",
+        model="Advisory thermostat zone",
+        name=entry.title,
+    )
+    if via_device := _source_via_device(hass, entry):
+        device_info["via_device"] = via_device
+
+    return device_info
+
+
+def _source_via_device(
+    hass: HomeAssistant, entry: ConfigEntry
+) -> tuple[str, str] | None:
+    """Return the configured climate device identifier for topology linking."""
     entity_registry = er.async_get(hass)
     device_registry = dr.async_get(hass)
 
@@ -121,15 +138,7 @@ def _source_device_info(hass: HomeAssistant, entry: ConfigEntry) -> DeviceInfo |
     if source_device is None:
         return None
 
-    identifiers = set(source_device.identifiers)
-    connections = set(source_device.connections)
-    if not identifiers and not connections:
-        return None
-
-    return DeviceInfo(
-        identifiers=identifiers,
-        connections=connections,
-    )
+    return next(iter(sorted(source_device.identifiers)), None)
 
 
 class ThermobrainSensor(CoordinatorEntity[ThermobrainCoordinator], SensorEntity):
